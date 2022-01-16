@@ -2,10 +2,10 @@ from __future__ import print_function
 import numpy as np
 import sys
 import tensorflow as tf
-try:
-    import special_grads
-except KeyError as e:
-    print('WARN: Cannot define MaxPoolGrad, likely already defined for this version of tensorflow: %s' % e, file=sys.stderr)
+# try:
+    # import special_grads
+# except KeyError as e:
+    # print('WARN: Cannot define MaxPoolGrad, likely already defined for this version of tensorflow: %s' % e, file=sys.stderr)
 
 from tensorflow.python.platform import flags
 from utils import conv_block, fc, max_pool, lrn, dropout
@@ -25,7 +25,7 @@ class MASF:
         self.construct_weights = self.construct_alexnet_weights
         self.loss_func = xent
         self.global_loss_func = kd
-        self.WEIGHTS_PATH = '/path/to/pretrained_weights/bvlc_alexnet.npy'
+        self.WEIGHTS_PATH = './model/bvlc_alexnet.npy'
 
     def construct_model_train(self, prefix='metatrain_'):
         # a: meta-train for inner update, b: meta-test for meta loss
@@ -38,7 +38,7 @@ class MASF:
         self.bool_indicator_b_a = tf.placeholder(tf.float32, shape=(7,))
         self.bool_indicator_b_a1 = tf.placeholder(tf.float32, shape=(7,))
 
-        meta_sample_num = (FLAGS.meta_batch_size /3) * 3
+        meta_sample_num = (FLAGS.meta_batch_size //3) * 3
         self.input_group = tf.placeholder(tf.float32)
         self.label_group = tf.placeholder(tf.int32, shape=(meta_sample_num,))
 

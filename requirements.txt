@@ -1,6 +1,6 @@
-python==2.7.15rc1
+# python==2.7.15rc1
 numpy==1.16.4
-tensorflow-gpu==2.3.1
-tensorboard==1.14.0
+tensorflow==1.15.0
+tensorboard==1.15.0
 matplotlib==2.2.3
-skimage==0.14.2
+scikit-image==0.14.2

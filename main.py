@@ -17,7 +17,7 @@ else:
 ## Dataset PACS
 flags.DEFINE_string('dataset', 'pacs', 'set the dataset of PACS')
 flags.DEFINE_string('target_domain', 'art_painting', 'set the target domain')
-flags.DEFINE_string('dataroot', '/path/to/PACS_dataset/kfold/', 'Root folder where PACS dataset is stored')
+flags.DEFINE_string('dataroot', './PACS/kfold/', 'Root folder where PACS dataset is stored')
 flags.DEFINE_integer('num_classes', 7, 'number of classes used in classification.')
 
 ## Training options
@@ -32,7 +32,7 @@ flags.DEFINE_float('gradients_clip_value', 2.0, 'clip_by_value for SGD computing
 
 ## Logging, saving, and testing options
 flags.DEFINE_bool('log', True, 'if false, do not log summaries, for debugging code.')
-flags.DEFINE_string('logdir', '/log/', 'directory for summaries and checkpoints.')
+flags.DEFINE_string('logdir', './log/', 'directory for summaries and checkpoints.')
 flags.DEFINE_bool('train', True, 'True to train, False to test.')
 flags.DEFINE_bool('resume', False, 'resume training if there is a model available')
 flags.DEFINE_integer('summary_interval', 100, 'frequency for logging training summaries')
@@ -131,7 +131,7 @@ def train(model, saver, sess, exp_string, train_file_list, test_file, resume_itr
             if (i in sampledb) and (i in sampleda1):
                 bool_indicator_b_a1[i] = 1.0
 
-        part = FLAGS.meta_batch_size / 3
+        part = FLAGS.meta_batch_size // 3
         input_group = np.concatenate((inputa[:part],inputa1[:part],inputb[:part]), axis=0)
         label_group = np.concatenate((labela[:part],labela1[:part],labelb[:part]), axis=0)
         group_list = np.sum(label_group, axis=0)
@@ -199,7 +199,7 @@ def main():
     if not os.path.exists(FLAGS.logdir):
         os.makedirs(FLAGS.logdir)
 
-    filelist_root = '/path/to/image/filelist' # path to .txt files (e.g., art_painting.txt, cartoon.txt) where images are listed line by line
+    filelist_root = './PACS/pacs_label/' # path to .txt files (e.g., art_painting.txt, cartoon.txt) where images are listed line by line
     source_list = ['art_painting', 'cartoon', 'photo', 'sketch']
     source_list.remove(FLAGS.target_domain)
 
@@ -237,4 +237,5 @@ def main():
     train(model, saver, sess, exp_string, train_file_list, test_file_list[0], resume_itr)
 
 if __name__ == "__main__":
+
     main()
